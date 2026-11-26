@@ -16,11 +16,18 @@ char masmorra[10][21] =
     "####################", 
     "####################"
 };
+void des_masmorra(char masmorra[10][21], COORD *pos);
+void ocultar_cur();
+void mov(COORD *pos);
 
 //Função para imprimir a masmorra 
 void des_masmorra(char masmorra[10][21], COORD *pos)
 {
     int i, j;
+    HANDLE hsaid = GetStdHandle(STD_OUTPUT_HANDLE);//variável especial que lida com o output do sistema
+    COORD coord = {0, 0};
+    SetConsoleCursorPosition(hsaid,coord);//Coloca a saida do console no canto superior esquerdo do console
+
     for(i = 0; i < 10; i++ )
     {
         for(j = 0; j < 20; j++)
@@ -38,10 +45,16 @@ void des_masmorra(char masmorra[10][21], COORD *pos)
         printf("\n");
     }
    
-
 }
 
-
+void ocultar_cur()
+{
+    HANDLE hsaida = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorinfo;
+    GetConsoleCursorInfo(hsaida, &cursorinfo);
+    cursorinfo.bVisible = FALSE;
+    SetConsoleCursorInfo(hsaida, &cursorinfo);
+}
 void mov(COORD *pos)
 {
     int n_posx = pos->X;
@@ -69,10 +82,14 @@ int main()
     COORD pos;//COORD tipo especifico de variavel da wind para determinar a localização
     pos.X = 4;
     pos.Y = 0;
+    
+    ocultar_cur();
+    system("cls");
     while (1)
     {
         des_masmorra(masmorra, &pos);
         mov(&pos);
+        Sleep(100);
     }
     
     
