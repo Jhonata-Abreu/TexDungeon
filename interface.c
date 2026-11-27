@@ -1,5 +1,9 @@
 #include<stdio.h>
 #include <windows.h>
+#include"jogo.h"
+
+COORD pos = {4, 0}; // Inicializa a posição do personagem no início da masmorra;
+char campo_visao[10][21];
 
 void mostrar_menu(void){
     printf("1-Iniciar nova partida\n");
@@ -33,6 +37,23 @@ void mostrar_ranking(const char *txtRanking){
 
 
 // Função para imprimir a masmorra
+
+void atualizarVisao(){
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 21; j++){
+            // Lógica para atualizar o campo de visão
+            int dx = j - pos.X;
+            int dy = i - pos.Y;
+
+            if(dx * dx + dy * dy <= 16){ // visão circular com raio 4
+                campo_visao[i][j] = 1; // visível
+            } else {
+                campo_visao[i][j] = 0; // não visível
+            }
+        }
+    }
+}
+
 void des_masmorra(char masmorra[10][21], COORD *pos)
 {
     int i, j;
@@ -40,11 +61,20 @@ void des_masmorra(char masmorra[10][21], COORD *pos)
     COORD coord = {0, 0};
     SetConsoleCursorPosition(hsaid,coord);//Coloca a saida do console no canto superior esquerdo do console
 
+    atualizarVisao(); // Atualiza o campo de visão antes de desenhar a masmorra
+
     for(i = 0; i < 10; i++ )
     {
         for(j = 0; j < 20; j++)
         {
-            if (i == pos->Y && j == pos ->X)
+            if(campo_visao[i][j] == 0){
+                if(masmorra[i][j] == '#'){
+                    printf("#");
+                } else {
+                    printf(" ");
+                }
+            }
+            else if (i == pos->Y && j == pos->X)
             {
                 printf("@");
             }
@@ -56,7 +86,7 @@ void des_masmorra(char masmorra[10][21], COORD *pos)
         }
         printf("\n");
     }
-   
+    printf("\nUse as teclas W, A, S e D para se movimentar. Pressione ESC para sair.\n");
 }
 
 // Função para ocultar o cursor do console

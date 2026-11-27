@@ -9,6 +9,7 @@ void mostrar_ranking(const char *txtRanking);
 
 // Funções desenho da masmorra e ocultar cursor
 void des_masmorra(char masmorra[10][21], COORD *pos);
+void atualizarVisao();
 void ocultar_cur();
 
 
