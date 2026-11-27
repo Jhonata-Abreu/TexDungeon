@@ -7,10 +7,11 @@ void mostrar_menu(void);
 void mostrar_subMenu(void);
 void mostrar_ranking(const char *txtRanking);
 
-// Funções desenho da masmorra e ocultar cursor
+// Funções para desenhar a masmorra e atualizar o campo de visão
 void des_masmorra(char masmorra[10][21], COORD *pos);
 void atualizarVisao();
 void ocultar_cur();
+bool linhaVisao(int alvoX, int alvoY);
 
 
 #endif
